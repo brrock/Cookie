@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: blue;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s;
+        }
+        #cookie {
+            width: 200px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #gold-cookie {
+            width: 100px;
+            cursor: pointer;
+            position: absolute;
+            display: none;
+            z-index: 100;
+        }
+        #counter {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+        #shop {
+            margin-top: 30px;
+            display: none;
+        }
+        .item {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            background-color: lightblue;
+            cursor: pointer;
+        }
+        .item:hover {
+            background-color: #add8e6;
+        }
+        #colorToggleButton, #reloadButton, #shopButton {
+            margin: 20px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: lightblue;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #888;
+        }
+        #roNotBroButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #roNotBroButton:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cookie Clicker</h1>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8y9zXAAAAmklEQVRIDbXBAQEAAAABIP6PzgpVwcW4jAOuA4dohRh4m7Qfs9T3sExwVbbFnVrpu5GOhIMV8p9gXM6qoxCx80eHJW0cq2cAAAAAElFTkSuQmCC" id="cookie" alt="Cookie">
+    <img src="https://cdn.pixabay.com/photo/2017/10/30/14/05/cookie-2903059_960_720.png" id="gold-cookie" alt="Gold Cookie">
+
+    <div id="counter">Cookies: 0</div>
+
+    <button id="colorToggleButton" onclick="toggleBackgroundColor()">Toggle Background Color</button>
+    <button id="reloadButton" onclick="reloadGame()">Reload Game</button>
+    <button id="shopButton" onclick="toggleShop()">Shop</button>
+
+    <div id="shop">
+        <h2>Shop</h2>
+        <div class="item" onclick="buyUpgrade(1)">
+            <p>Upgrade 1 (+1 per click)</p>
+            <p>Cost: <span id="cost1">10</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyUpgrade(2)">
+            <p>Upgrade 2 (+5 per click)</p>
+            <p>Cost: <span id="cost2">50</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyUpgrade(3)">
+            <p>Upgrade 3 (+10 per click)</p>
+            <p>Cost: <span id="cost3">100</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyFactory()">
+            <p>Cookie Factory (+1 cookie per second)</p>
+            <p>Owned: <span id="factories">0</span></p>
+            <p>Cost: <span id="factoryCost">200</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyMine()">
+            <p>Cookie Mine (+5 cookies per second)</p>
+            <p>Owned: <span id="mines">0</span></p>
+            <p>Cost: <span id="mineCost">1000</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyFarm()">
+            <p>Cookie Farm (+20 cookies per second)</p>
+            <p>Owned: <span id="farms">0</span></p>
+            <p>Cost: <span id="farmCost">5000</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyPlanet()">
+            <p>Cookie Planet (+2000 cookies per second)</p>
+            <p>Owned: <span id="planets">0</span></p>
+            <p>Cost: <span id="planetCost">9000</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyBomb()">
+            <p>Cookie Bomb (+10000 cookies per second)</p>
+            <p>Owned: <span id="bombs">0</span></p>
+            <p>Cost: <span id="bombCost">40000</span> cookies</p>
+        </div>
+        <div class="item" onclick="buyNuke()">
+            <p>Cookie Nuke (+1000000 cookies per second)</p>
+            <p>Owned: <span id="nukes">0</span></p>
+            <p>Cost: <span id="nukeCost">20000000</span> cookies</p>
+        </div>
+    </div>
+
+    <footer>By Rohan</footer>
+
+    <button id="roNotBroButton" onclick="window.open('https://www.youtube.com/@RoNotBroYT', '_blank')">
+        RoNotBroYT
+    </button>
+
+    <script>
+        let cookies = 0;
+        let cookiesPerClick = 1;
+        let cookiesPerSecond = 0;
+        let factories = 0, mines = 0, farms = 0, planets = 0, bombs = 0, nukes = 0;
+        let upgradeCosts = [10, 50, 100];
+        let upgradeValues = [1, 5, 10];
+        let factoryCost = 200, mineCost = 1000, farmCost = 5000, planetCost = 9000, bombCost = 40000, nukeCost = 20000000;
+        let currentColor = "blue"; // To track the current background color
+
+        document.getElementById("cookie").onclick = function() {
+            cookies += cookiesPerClick;
+            updateCounter();
+        };
+
+        function toggleBackgroundColor() {
+            if (currentColor === "blue") {
+                document.body.style.backgroundColor = "green";
+                currentColor = "green";
+            } else if (currentColor === "green") {
+                document.body.style.backgroundColor = "red";
+                currentColor = "red";
+            } else {
+                document.body.style.backgroundColor = "blue";
+                currentColor = "blue";
+            }
+        }
+
+        function reloadGame() {
+            cookies = 0;
+            cookiesPerClick = 1;
+            cookiesPerSecond = 0;
+            factories = 0;
+            mines = 0;
+            farms = 0;
+            planets = 0;
+            bombs = 0;
+            nukes = 0;
+            upgradeCosts = [10, 50, 100];
+            updateCounter();
+        }
+
+        function toggleShop() {
+            const shop = document.getElementById("shop");
+            shop.style.display = (shop.style.display === "none" || shop.style.display === "") ? "block" : "none";
+        }
+
+        function updateCounter() {
+            document.getElementById("counter").textContent = "Cookies: " + cookies;
+            document.getElementById("factories").textContent = factories;
+            document.getElementById("mines").textContent = mines;
+            document.getElementById("farms").textContent = farms;
+            document.getElementById("planets").textContent = planets;
+            document.getElementById("bombs").textContent = bombs;
+            document.getElementById("nukes").textContent = nukes;
+            document.getElementById("factoryCost").textContent = factoryCost;
+            document.getElementById("mineCost").textContent = mineCost;
+            document.getElementById("farmCost").textContent = farmCost;
+            document.getElementById("planetCost").textContent = planetCost;
+            document.getElementById("bombCost").textContent = bombCost;
+            document.getElementById("nukeCost").textContent = nukeCost;
+        }
+
+        function buyUpgrade(upgrade) {
+            let cost = upgradeCosts[upgrade - 1];
+            if (cookies >= cost) {
+                cookies -= cost;
+                cookiesPerClick += upgradeValues[upgrade - 1];
+                upgradeCosts[upgrade - 1] = Math.floor(cost * 1.7);
+                updateCounter();
+            }
+        }
+
+        function buyFactory() {
+            if (cookies >= factoryCost) {
+                cookies -= factoryCost;
+                factories++;
+                cookiesPerSecond += 1;
+                factoryCost = Math.floor(factoryCost * 1.7);
+                updateCounter();
+            }
+        }
+
+        function buyMine() {
+            if (cookies >= mineCost) {
+                cookies -= mineCost;
+                mines++;
+                cookiesPerSecond += 5;
+                mineCost = Math.floor(mineCost * 1.7);
+                updateCounter();
+            }
+        }
+
+        function buyFarm() {
+            if (cookies >= farmCost) {
+                cookies -= farmCost;
+                farms++;
+                cookiesPerSecond += 20;
+                farmCost = Math.floor(farmCost * 1.7);
+                updateCounter();
+            }
+        }
+
+        function buyPlanet() {
+            if (cookies >= planetCost) {
+                cookies -= planetCost;
+                planets++;
+                cookiesPerSecond += 2000;
+                planetCost = Math.floor(planetCost * 1.7);
+                updateCounter();
+            }
+        }
+
+        function buyBomb() {
+            if (cookies >= bombCost) {
+                cookies -= bombCost;
+                bombs++;
+                cookiesPerSecond += 10000;
+                bombCost = Math.floor(bombCost * 1.7);
+                updateCounter();
+            }
+        }
+
+        function buyNuke() {
+            if (cookies >= nukeCost) {
+                cookies -= nukeCost;
+                nukes++;
+                cookiesPerSecond += 1000000;
+                nukeCost = Math.floor(nukeCost * 1.7);
+                updateCounter();
+            }
+        }
+
+        setInterval(function() {
+            cookies += cookiesPerSecond;
+            updateCounter();
+        }, 1000);
+    </script>
+
+</body>
+</html>
