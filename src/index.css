@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Base styles */
+
+body {
+    @apply min-h-screen text-center bg-blue-500 m-0 p-0;
+    @apply transition-colors duration-500;
+  }
+  
+  body.dark {
+    @apply bg-blue-800;
+  }
+  
+  /* Cookie images */
+  #gold-cookie {
+    @apply w-24 cursor-pointer absolute hidden z-50;
+  }
+  
+  #cookie {
+    @apply w-48 cursor-pointer mx-auto mt-5;
+  }
+  
+  /* Counter */
+  #counter {
+    @apply text-4xl mt-5 text-white;
+  }
+  
+  /* Buttons */
+  button {
+    @apply px-4 py-2 bg-sky-200 hover:bg-sky-300 rounded-lg;
+    @apply transition-colors duration-300;
+  }
+  
+  #button-container {
+    @apply flex justify-center gap-5 mt-5;
+  }
+  
+  /* Shop section */
+  #shop {
+    @apply mt-8 hidden;
+  }
+  
+  #shop.visible {
+    @apply block;
+  }
+  
+  .shop-items {
+    @apply flex flex-wrap justify-center gap-4;
+  }
+  
+  .item {
+    @apply p-4 bg-sky-200 hover:bg-sky-300 rounded-lg cursor-pointer max-w-80;
+    @apply transition-colors duration-300 border border-sky-300;
+    @apply grid grid-cols-3 justify-center gap-4;
+
+  }
+  
+  /* RoNotBro button */
+  #roNotBroButton {
+    @apply mt-5 px-6 py-3 bg-green-500 hover:bg-green-600;
+    @apply text-white text-lg rounded-lg;
+    @apply transition-colors duration-300;
+  }
+  
+  /* Footer */
+  footer {
+    @apply mt-5 text-gray-300;
+  }
