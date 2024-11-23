@@ -4,3 +4,4 @@
 - Tailwindcss
 - vite
 - TS
+- docker
