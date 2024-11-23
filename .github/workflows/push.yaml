@@ -30,9 +30,9 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and push ARM64 and AMD64 Docker images
+    - name: Build and push ARM64 and AMD64 Docker images to GHCR
       run: |
         docker buildx build \
           --platform linux/amd64,linux/arm64 \
-          --tag ghcr.io/${{ github.repository }}/my-image:latest \
+          --tag ghcr.io/${{ github.repository_owner }}/my-image:latest \
           --push .
